@@ -1,0 +1,12 @@
+{
+  "name": "Street Fighter 6 Singles",
+  "slug": "sf6-singles",
+  "game": "Street Fighter 6",
+  "format": "DOUBLE_ELIMINATION",
+  "type": "SINGLES",
+  "startDate": "2025-02-01T11:00:00.000Z",
+  "endDate": "2025-02-01T15:00:00.000Z",
+  "maxEntrants": 32,
+  "entryFee": 5.0,
+  "tournamentId": "cmfu3tkhk0001w23610ulxxwy"
+}
