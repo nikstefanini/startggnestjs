@@ -1,0 +1,318 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id               String                  @id @default(cuid())
+  email            String                  @unique
+  username         String                  @unique
+  password         String
+  firstName        String?
+  lastName         String?
+  avatar           String?
+  bio              String?
+  country          String?
+  timezone         String?
+  isVerified       Boolean                 @default(false)
+  isActive         Boolean                 @default(true)
+  role             UserRole                @default(USER)
+  createdAt        DateTime                @default(now())
+  updatedAt        DateTime                @updatedAt
+  lastLogin        DateTime?
+  matchesAsPlayer1 Match[]                 @relation("MatchPlayer1")
+  matchesAsPlayer2 Match[]                 @relation("MatchPlayer2")
+  setsAsPlayer1    Set[]                   @relation("SetPlayer1")
+  setsAsPlayer2    Set[]                   @relation("SetPlayer2")
+  participations   TournamentParticipant[]
+  tournaments      Tournament[]
+  notifications    UserNotification[]
+
+  @@map("users")
+}
+
+model Tournament {
+  id                String                  @id @default(cuid())
+  name              String
+  slug              String                  @unique
+  description       String?
+  game              String
+  format            TournamentFormat
+  type              TournamentType
+  status            TournamentStatus        @default(UPCOMING)
+  startDate         DateTime
+  endDate           DateTime?
+  registrationOpen  Boolean                 @default(false)
+  registrationStart DateTime?
+  registrationEnd   DateTime?
+  maxParticipants   Int?
+  entryFee          Float?
+  venue             String?
+  address           String?
+  city              String?
+  country           String?
+  timezone          String?
+  isOnline          Boolean                 @default(false)
+  isPublic          Boolean                 @default(true)
+  createdAt         DateTime                @default(now())
+  updatedAt         DateTime                @updatedAt
+  organizerId       String
+  events            Event[]
+  participants      TournamentParticipant[]
+  organizer         User                    @relation(fields: [organizerId], references: [id])
+
+  @@map("tournaments")
+}
+
+model Event {
+  id            String             @id @default(cuid())
+  name          String
+  slug          String
+  game          String
+  format        TournamentFormat
+  type          TournamentType
+  status        EventStatus        @default(UPCOMING)
+  bracketType   BracketType        @default(SINGLE_ELIMINATION)
+  startingPhase String?
+  startDate     DateTime
+  endDate       DateTime?
+  maxEntrants   Int?
+  entryFee      Float?
+  createdAt     DateTime           @default(now())
+  updatedAt     DateTime           @updatedAt
+  tournamentId  String
+  participants  EventParticipant[]
+  tournament    Tournament         @relation(fields: [tournamentId], references: [id], onDelete: Cascade)
+  matches       Match[]
+  phases        Phase[]
+
+  @@unique([tournamentId, slug])
+  @@map("events")
+}
+
+model TournamentParticipant {
+  id                  String             @id @default(cuid())
+  userId              String
+  tournamentId        String
+  status              ParticipantStatus  @default(REGISTERED)
+  seed                Int?
+  registeredAt        DateTime           @default(now())
+  updatedAt           DateTime           @updatedAt
+  eventParticipations EventParticipant[]
+  tournament          Tournament         @relation(fields: [tournamentId], references: [id], onDelete: Cascade)
+  user                User               @relation(fields: [userId], references: [id])
+
+  @@unique([userId, tournamentId])
+  @@map("tournament_participants")
+}
+
+model EventParticipant {
+  id            String                @id @default(cuid())
+  participantId String
+  eventId       String
+  status        ParticipantStatus     @default(REGISTERED)
+  seed          Int?
+  placement     Int?
+  createdAt     DateTime              @default(now())
+  updatedAt     DateTime              @updatedAt
+  event         Event                 @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  participant   TournamentParticipant @relation(fields: [participantId], references: [id], onDelete: Cascade)
+
+  @@unique([participantId, eventId])
+  @@map("event_participants")
+}
+
+model Phase {
+  id          String       @id @default(cuid())
+  name        String
+  type        PhaseType
+  order       Int
+  bracketType BracketType
+  numSeeds    Int?
+  status      PhaseStatus  @default(PENDING)
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  eventId     String
+  groups      PhaseGroup[]
+  event       Event        @relation(fields: [eventId], references: [id], onDelete: Cascade)
+
+  @@map("phases")
+}
+
+model PhaseGroup {
+  id        String      @id @default(cuid())
+  name      String
+  order     Int
+  status    PhaseStatus @default(PENDING)
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+  phaseId   String
+  phase     Phase       @relation(fields: [phaseId], references: [id], onDelete: Cascade)
+  sets      Set[]
+
+  @@map("phase_groups")
+}
+
+model Match {
+  id          String      @id @default(cuid())
+  identifier  String
+  round       Int
+  status      MatchStatus @default(PENDING)
+  winnerId    String?
+  scheduledAt DateTime?
+  startedAt   DateTime?
+  completedAt DateTime?
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  eventId     String
+  player1Id   String
+  player2Id   String?
+  event       Event       @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  player1     User        @relation("MatchPlayer1", fields: [player1Id], references: [id])
+  player2     User?       @relation("MatchPlayer2", fields: [player2Id], references: [id])
+  sets        Set[]
+
+  @@map("matches")
+}
+
+model Set {
+  id           String     @id @default(cuid())
+  setNumber    Int
+  player1Score Int        @default(0)
+  player2Score Int        @default(0)
+  status       SetStatus  @default(PENDING)
+  winnerId     String?
+  startedAt    DateTime?
+  completedAt  DateTime?
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+  matchId      String
+  phaseGroupId String
+  player1Id    String
+  player2Id    String?
+  games        Game[]
+  match        Match      @relation(fields: [matchId], references: [id], onDelete: Cascade)
+  phaseGroup   PhaseGroup @relation(fields: [phaseGroupId], references: [id])
+  player1      User       @relation("SetPlayer1", fields: [player1Id], references: [id])
+  player2      User?      @relation("SetPlayer2", fields: [player2Id], references: [id])
+
+  @@map("sets")
+}
+
+model Game {
+  id          String    @id @default(cuid())
+  gameNumber  Int
+  winnerId    String?
+  completedAt DateTime?
+  createdAt   DateTime  @default(now())
+  setId       String
+  set         Set       @relation(fields: [setId], references: [id], onDelete: Cascade)
+
+  @@map("games")
+}
+
+model UserNotification {
+  id        String           @id @default(cuid())
+  title     String
+  message   String
+  type      NotificationType
+  isRead    Boolean          @default(false)
+  createdAt DateTime         @default(now())
+  readAt    DateTime?
+  userId    String
+  user      User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("user_notifications")
+}
+
+enum UserRole {
+  USER
+  ORGANIZER
+  ADMIN
+  SUPER_ADMIN
+}
+
+enum TournamentFormat {
+  SINGLE_ELIMINATION
+  DOUBLE_ELIMINATION
+  ROUND_ROBIN
+  SWISS
+  POOLS
+}
+
+enum TournamentType {
+  SINGLES
+  DOUBLES
+  TEAMS
+  CREW_BATTLE
+}
+
+enum TournamentStatus {
+  UPCOMING
+  REGISTRATION_OPEN
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+}
+
+enum EventStatus {
+  UPCOMING
+  ACTIVE
+  COMPLETED
+  CANCELLED
+}
+
+enum BracketType {
+  SINGLE_ELIMINATION
+  DOUBLE_ELIMINATION
+  ROUND_ROBIN
+  SWISS
+  POOLS
+}
+
+enum ParticipantStatus {
+  REGISTERED
+  CHECKED_IN
+  ACTIVE
+  ELIMINATED
+  DISQUALIFIED
+  WITHDRAWN
+}
+
+enum PhaseType {
+  POOLS
+  BRACKET
+  FINALS
+}
+
+enum PhaseStatus {
+  PENDING
+  ACTIVE
+  COMPLETED
+}
+
+enum MatchStatus {
+  PENDING
+  CALLED
+  STARTED
+  COMPLETED
+  CANCELLED
+}
+
+enum SetStatus {
+  PENDING
+  STARTED
+  COMPLETED
+}
+
+enum NotificationType {
+  TOURNAMENT_UPDATE
+  MATCH_CALLED
+  MATCH_RESULT
+  REGISTRATION_OPEN
+  SYSTEM_ANNOUNCEMENT
+}
