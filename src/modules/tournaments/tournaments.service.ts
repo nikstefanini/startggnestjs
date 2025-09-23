@@ -156,6 +156,20 @@ export class TournamentsService {
               game: true,
             }
           },
+          participants: {
+              select: {
+                id: true,
+                userId: true,
+                status: true,
+                registeredAt: true,
+                user: {
+                  select: {
+                    id: true,
+                    username: true,
+                  },
+                },
+              },
+            },
           _count: {
             select: {
               participants: true
@@ -404,6 +418,81 @@ export class TournamentsService {
       limit: filters.limit,
       offset: filters.offset,
       hasMore: filters.offset + filters.limit < total
+    };
+  }
+
+  async joinTournament(tournamentId: string, userId: string) {
+    // Verificar que el torneo existe
+    const tournament = await this.prisma.tournament.findUnique({
+      where: { id: tournamentId },
+      include: {
+        participants: true,
+        _count: {
+          select: {
+            participants: true
+          }
+        }
+      }
+    });
+
+    if (!tournament) {
+      throw new NotFoundException('Torneo no encontrado');
+    }
+
+    // Verificar que el usuario no sea el organizador
+    if (tournament.organizerId === userId) {
+      throw new BadRequestException('No puedes unirte a tu propio torneo');
+    }
+
+    // Verificar que el usuario no esté ya participando
+    const existingParticipant = tournament.participants.find(p => p.userId === userId);
+    if (existingParticipant) {
+      throw new BadRequestException('Ya estás participando en este torneo');
+    }
+
+    // Verificar límite de participantes
+    if (tournament.maxParticipants && tournament._count.participants >= tournament.maxParticipants) {
+      throw new BadRequestException('El torneo ha alcanzado el límite máximo de participantes');
+    }
+
+    // Verificar estado del torneo
+    if (tournament.status !== TournamentStatus.UPCOMING) {
+      throw new BadRequestException('No puedes unirte a un torneo que ya ha comenzado o terminado');
+    }
+
+    // Verificar fechas de registro
+    const now = new Date();
+    if (tournament.registrationStart && now < tournament.registrationStart) {
+      throw new BadRequestException('El registro para este torneo aún no ha comenzado');
+    }
+    if (tournament.registrationEnd && now > tournament.registrationEnd) {
+      throw new BadRequestException('El registro para este torneo ya ha cerrado');
+    }
+
+    // Crear la participación
+    const participant = await this.prisma.tournamentParticipant.create({
+      data: {
+        tournamentId,
+        userId,
+      },
+      include: {
+        user: {
+          select: {
+            id: true,
+            username: true,
+            email: true,
+          }
+        }
+      }
+    });
+
+    return {
+      participant,
+      tournament: {
+        id: tournament.id,
+        name: tournament.name,
+        participantCount: tournament._count.participants + 1,
+      }
     };
   }
 }

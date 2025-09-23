@@ -107,6 +107,19 @@ export class EventsController {
     };
   }
 
+  @Post(':id/attend')
+  @UseGuards(JwtAuthGuard)
+  @HttpCode(HttpStatus.OK)
+  async attendEvent(@Param('id') id: string, @Request() req: any) {
+    const result = await this.eventsService.attendEvent(id, req.user.id);
+    
+    return {
+      success: true,
+      message: 'Te has registrado al evento exitosamente',
+      data: result,
+    };
+  }
+
   @Delete(':id')
   @UseGuards(JwtAuthGuard)
   @HttpCode(HttpStatus.NO_CONTENT)

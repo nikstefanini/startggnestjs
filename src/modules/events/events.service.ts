@@ -454,4 +454,5 @@ export class EventsService {
       }
     });
   }
+
 }

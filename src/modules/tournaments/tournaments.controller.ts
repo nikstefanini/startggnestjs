@@ -124,6 +124,19 @@ export class TournamentsController {
     };
   }
 
+  @Post(':id/join')
+  @UseGuards(JwtAuthGuard)
+  @HttpCode(HttpStatus.OK)
+  async joinTournament(@Param('id') id: string, @Request() req: any) {
+    const result = await this.tournamentsService.joinTournament(id, req.user.id);
+    
+    return {
+      success: true,
+      message: 'Te has unido al torneo exitosamente',
+      data: result,
+    };
+  }
+
   @Delete(':id')
   @UseGuards(JwtAuthGuard)
   @HttpCode(HttpStatus.NO_CONTENT)
