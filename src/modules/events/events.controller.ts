@@ -118,27 +118,4 @@ export class EventsController {
       message: 'Evento eliminado exitosamente',
     };
   }
-
-  @Post(':id/attend')
-  @UseGuards(JwtAuthGuard)
-  async attendEvent(@Param('id') id: string, @Request() req: any) {
-    const result = await this.eventsService.attendEvent(id, req.user.id);
-    
-    return {
-      success: true,
-      message: 'Te has registrado al evento exitosamente',
-      data: result,
-    };
-  }
-
-  @Delete(':id/unattend')
-  @UseGuards(JwtAuthGuard)
-  async unattendEvent(@Param('id') id: string, @Request() req: any) {
-    await this.eventsService.unattendEvent(id, req.user.id);
-    
-    return {
-      success: true,
-      message: 'Has cancelado tu asistencia al evento',
-    };
-  }
 }

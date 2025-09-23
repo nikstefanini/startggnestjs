@@ -135,27 +135,4 @@ export class TournamentsController {
       message: 'Torneo eliminado exitosamente',
     };
   }
-
-  @Post(':id/join')
-  @UseGuards(JwtAuthGuard)
-  async joinTournament(@Param('id') id: string, @Request() req: any) {
-    const result = await this.tournamentsService.joinTournament(id, req.user.id);
-    
-    return {
-      success: true,
-      message: 'Te has unido al torneo exitosamente',
-      data: result,
-    };
-  }
-
-  @Delete(':id/leave')
-  @UseGuards(JwtAuthGuard)
-  async leaveTournament(@Param('id') id: string, @Request() req: any) {
-    await this.tournamentsService.leaveTournament(id, req.user.id);
-    
-    return {
-      success: true,
-      message: 'Has abandonado el torneo exitosamente',
-    };
-  }
 }

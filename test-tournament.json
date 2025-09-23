@@ -4,7 +4,7 @@
   "description": "Torneo de prueba para validar la funcionalidad del sistema",
   "game": "Street Fighter 6",
   "format": "SINGLE_ELIMINATION",
-  "type": "SINGLES",
+  "type": "SINGLE",
   "startDate": "2025-02-01T10:00:00.000Z",
   "endDate": "2025-02-01T18:00:00.000Z",
   "registrationOpen": true,
