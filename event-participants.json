@@ -1,0 +1,82 @@
+[
+  {
+    "id": "cmfy3asju000dtw8xx9jx9u7e",
+    "participantId": "cmfy3asaz000btw8x3z0qcnn7",
+    "eventId": "cmfy38nge0001tw8xgiqtw0x6",
+    "status": "REGISTERED",
+    "seed": null,
+    "placement": null,
+    "createdAt": "2025-09-24T14:38:57.546Z",
+    "updatedAt": "2025-09-24T14:38:57.546Z"
+  },
+  {
+    "id": "cmfy3at2d000htw8xynkw5em3",
+    "participantId": "cmfy3ast2000ftw8xqqnefpoy",
+    "eventId": "cmfy38nge0001tw8xgiqtw0x6",
+    "status": "REGISTERED",
+    "seed": null,
+    "placement": null,
+    "createdAt": "2025-09-24T14:38:58.214Z",
+    "updatedAt": "2025-09-24T14:38:58.214Z"
+  },
+  {
+    "id": "cmfy3atkr000ltw8xxg5iq0i3",
+    "participantId": "cmfy3atbi000jtw8xfzvco9k1",
+    "eventId": "cmfy38nge0001tw8xgiqtw0x6",
+    "status": "REGISTERED",
+    "seed": null,
+    "placement": null,
+    "createdAt": "2025-09-24T14:38:58.875Z",
+    "updatedAt": "2025-09-24T14:38:58.875Z"
+  },
+  {
+    "id": "cmfy3au3d000ptw8xe5gg53xo",
+    "participantId": "cmfy3atu4000ntw8xigffg7sj",
+    "eventId": "cmfy38nge0001tw8xgiqtw0x6",
+    "status": "REGISTERED",
+    "seed": null,
+    "placement": null,
+    "createdAt": "2025-09-24T14:38:59.545Z",
+    "updatedAt": "2025-09-24T14:38:59.545Z"
+  },
+  {
+    "id": "cmfy3aulr000ttw8x3k6nwwu5",
+    "participantId": "cmfy3aucl000rtw8xfb7ead64",
+    "eventId": "cmfy38nge0001tw8xgiqtw0x6",
+    "status": "REGISTERED",
+    "seed": null,
+    "placement": null,
+    "createdAt": "2025-09-24T14:39:00.207Z",
+    "updatedAt": "2025-09-24T14:39:00.207Z"
+  },
+  {
+    "id": "cmfy3av3x000xtw8xbsgi7pqc",
+    "participantId": "cmfy3auup000vtw8xestpq4kb",
+    "eventId": "cmfy38nge0001tw8xgiqtw0x6",
+    "status": "REGISTERED",
+    "seed": null,
+    "placement": null,
+    "createdAt": "2025-09-24T14:39:00.862Z",
+    "updatedAt": "2025-09-24T14:39:00.862Z"
+  },
+  {
+    "id": "cmfy3avmo0011tw8xadfvmjqj",
+    "participantId": "cmfy3avd8000ztw8xiyf8a4yx",
+    "eventId": "cmfy38nge0001tw8xgiqtw0x6",
+    "status": "REGISTERED",
+    "seed": null,
+    "placement": null,
+    "createdAt": "2025-09-24T14:39:01.536Z",
+    "updatedAt": "2025-09-24T14:39:01.536Z"
+  },
+  {
+    "id": "cmfy3aw4z0015tw8xhiszz3tv",
+    "participantId": "cmfy3avvr0013tw8xebhc3bjn",
+    "eventId": "cmfy38nge0001tw8xgiqtw0x6",
+    "status": "REGISTERED",
+    "seed": null,
+    "placement": null,
+    "createdAt": "2025-09-24T14:39:02.195Z",
+    "updatedAt": "2025-09-24T14:39:02.195Z"
+  }
+]

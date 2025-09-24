@@ -1,0 +1,58 @@
+[
+  {
+    "email": "player1@test.com",
+    "username": "player1",
+    "password": "password123",
+    "firstName": "Juan",
+    "lastName": "Pérez"
+  },
+  {
+    "email": "player2@test.com",
+    "username": "player2",
+    "password": "password123",
+    "firstName": "María",
+    "lastName": "García"
+  },
+  {
+    "email": "player3@test.com",
+    "username": "player3",
+    "password": "password123",
+    "firstName": "Carlos",
+    "lastName": "López"
+  },
+  {
+    "email": "player4@test.com",
+    "username": "player4",
+    "password": "password123",
+    "firstName": "Ana",
+    "lastName": "Martínez"
+  },
+  {
+    "email": "player5@test.com",
+    "username": "player5",
+    "password": "password123",
+    "firstName": "Luis",
+    "lastName": "Rodríguez"
+  },
+  {
+    "email": "player6@test.com",
+    "username": "player6",
+    "password": "password123",
+    "firstName": "Elena",
+    "lastName": "Fernández"
+  },
+  {
+    "email": "player7@test.com",
+    "username": "player7",
+    "password": "password123",
+    "firstName": "Miguel",
+    "lastName": "Sánchez"
+  },
+  {
+    "email": "player8@test.com",
+    "username": "player8",
+    "password": "password123",
+    "firstName": "Laura",
+    "lastName": "Jiménez"
+  }
+]

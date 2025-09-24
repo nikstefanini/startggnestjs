@@ -62,7 +62,7 @@ export class BracketsService {
         type,
         seeding: participantsWithSeeding.map(p => p.name),
         settings: {
-          seedOrdering: settings.seedOrdering || participantsWithSeeding.map((_, i) => i),
+          seedOrdering: ['natural'],
           balanceByes: settings.balanceByes ?? true,
           ...settings
         }

@@ -1,12 +1,12 @@
 {
-  "name": "Street Fighter 6 Singles",
-  "slug": "sf6-singles",
+  "name": "Street Fighter 6 Singles Test",
+  "slug": "sf6-singles-test",
   "game": "Street Fighter 6",
-  "format": "DOUBLE_ELIMINATION",
+  "format": "SINGLE_ELIMINATION",
   "type": "SINGLES",
-  "startDate": "2025-02-01T11:00:00.000Z",
-  "endDate": "2025-02-01T15:00:00.000Z",
-  "maxEntrants": 32,
-  "entryFee": 5.0,
-  "tournamentId": "cmfu3tkhk0001w23610ulxxwy"
+  "startDate": "2025-03-01T11:00:00.000Z",
+  "endDate": "2025-03-01T15:00:00.000Z",
+  "maxEntrants": 16,
+  "entryFee": 5,
+  "tournamentId": "cmfy37nsa0001300yuyf2vw50"
 }

@@ -1,0 +1,42 @@
+[
+  {
+    "username": "player1",
+    "id": "cmfy39t480002tw8xha0qxtrm",
+    "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbWZ5Mzl0NDgwMDAydHc4eGhhMHF4dHJtIiwidXNlcm5hbWUiOiJwbGF5ZXIxIiwicm9sZSI6IlVTRVIiLCJpYXQiOjE3NTg3MjQ2OTEsImV4cCI6MTc1OTMyOTQ5MX0.cnB05wHlRIK2tSrxl3mpeTk31VMykYDVxv_9aXMpru0"
+  },
+  {
+    "username": "player2",
+    "id": "cmfy39top0003tw8x26fqoh8p",
+    "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbWZ5Mzl0b3AwMDAzdHc4eDI2ZnFvaDhwIiwidXNlcm5hbWUiOiJwbGF5ZXIyIiwicm9sZSI6IlVTRVIiLCJpYXQiOjE3NTg3MjQ2OTIsImV4cCI6MTc1OTMyOTQ5Mn0.Q4fW3LhOGlahXmjnFz2DeDFb3cIFfgNpcQsBwPW-QHY"
+  },
+  {
+    "username": "player3",
+    "id": "cmfy39u8z0004tw8xcxkc3ici",
+    "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbWZ5Mzl1OHowMDA0dHc4eGN4a2MzaWNpIiwidXNlcm5hbWUiOiJwbGF5ZXIzIiwicm9sZSI6IlVTRVIiLCJpYXQiOjE3NTg3MjQ2OTMsImV4cCI6MTc1OTMyOTQ5M30.wfe3wEzkYTdpzNv-fju8R9-H8aEW9zVCzEJEJdW3jK4"
+  },
+  {
+    "username": "player4",
+    "id": "cmfy39uuj0005tw8xlulvl9pa",
+    "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbWZ5Mzl1dWowMDA1dHc4eGx1bHZsOXBhIiwidXNlcm5hbWUiOiJwbGF5ZXI0Iiwicm9sZSI6IlVTRVIiLCJpYXQiOjE3NTg3MjQ2OTMsImV4cCI6MTc1OTMyOTQ5M30.0UncAEa4eHUQjdZXGxxLBkT3ut348xYyzPezDhEMYj0"
+  },
+  {
+    "username": "player5",
+    "id": "cmfy39vez0006tw8xnud3cevv",
+    "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbWZ5Mzl2ZXowMDA2dHc4eG51ZDNjZXZ2IiwidXNlcm5hbWUiOiJwbGF5ZXI1Iiwicm9sZSI6IlVTRVIiLCJpYXQiOjE3NTg3MjQ2OTQsImV4cCI6MTc1OTMyOTQ5NH0.fLi4hzFD6pDQkQgJoqpBpxvl8KIfHzzq5RpXrhCKPsE"
+  },
+  {
+    "username": "player6",
+    "id": "cmfy39vze0007tw8xq5fh30y6",
+    "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbWZ5Mzl2emUwMDA3dHc4eHE1ZmgzMHk2IiwidXNlcm5hbWUiOiJwbGF5ZXI2Iiwicm9sZSI6IlVTRVIiLCJpYXQiOjE3NTg3MjQ2OTUsImV4cCI6MTc1OTMyOTQ5NX0.9UuVoQndaFyeLEkHL5huTKoQwKQOOMZgpxySkEsTxH8"
+  },
+  {
+    "username": "player7",
+    "id": "cmfy39wjn0008tw8xeiafmh6f",
+    "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbWZ5Mzl3am4wMDA4dHc4eGVpYWZtaDZmIiwidXNlcm5hbWUiOiJwbGF5ZXI3Iiwicm9sZSI6IlVTRVIiLCJpYXQiOjE3NTg3MjQ2OTYsImV4cCI6MTc1OTMyOTQ5Nn0.KOwF7slDwt2ZpeW3uCpykTRaXCuesYqlK0_7oiPs0Oc"
+  },
+  {
+    "username": "player8",
+    "id": "cmfy39x440009tw8xqxo5dtjv",
+    "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbWZ5Mzl4NDQwMDA5dHc4eHF4bzVkdGp2IiwidXNlcm5hbWUiOiJwbGF5ZXI4Iiwicm9sZSI6IlVTRVIiLCJpYXQiOjE3NTg3MjQ2OTYsImV4cCI6MTc1OTMyOTQ5Nn0.NbANL8tQlqlQ4cvO5pmq60k5Rm_2lhjQHmildFWv5O4"
+  }
+]

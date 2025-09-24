@@ -1,0 +1,130 @@
+[
+  {
+    "id": "cmfy3asaz000btw8x3z0qcnn7",
+    "userId": "cmfy39t480002tw8xha0qxtrm",
+    "tournamentId": "cmfy37nsa0001300yuyf2vw50",
+    "status": "REGISTERED",
+    "seed": null,
+    "registeredAt": "2025-09-24T14:38:57.224Z",
+    "updatedAt": "2025-09-24T14:38:57.227Z",
+    "user": {
+      "id": "cmfy39t480002tw8xha0qxtrm",
+      "username": "player1",
+      "firstName": "Juan",
+      "lastName": "P├®rez",
+      "avatar": null
+    }
+  },
+  {
+    "id": "cmfy3ast2000ftw8xqqnefpoy",
+    "userId": "cmfy39top0003tw8x26fqoh8p",
+    "tournamentId": "cmfy37nsa0001300yuyf2vw50",
+    "status": "REGISTERED",
+    "seed": null,
+    "registeredAt": "2025-09-24T14:38:57.875Z",
+    "updatedAt": "2025-09-24T14:38:57.878Z",
+    "user": {
+      "id": "cmfy39top0003tw8x26fqoh8p",
+      "username": "player2",
+      "firstName": "Mar├¡a",
+      "lastName": "Garc├¡a",
+      "avatar": null
+    }
+  },
+  {
+    "id": "cmfy3atbi000jtw8xfzvco9k1",
+    "userId": "cmfy39u8z0004tw8xcxkc3ici",
+    "tournamentId": "cmfy37nsa0001300yuyf2vw50",
+    "status": "REGISTERED",
+    "seed": null,
+    "registeredAt": "2025-09-24T14:38:58.54Z",
+    "updatedAt": "2025-09-24T14:38:58.543Z",
+    "user": {
+      "id": "cmfy39u8z0004tw8xcxkc3ici",
+      "username": "player3",
+      "firstName": "Carlos",
+      "lastName": "L├│pez",
+      "avatar": null
+    }
+  },
+  {
+    "id": "cmfy3atu4000ntw8xigffg7sj",
+    "userId": "cmfy39uuj0005tw8xlulvl9pa",
+    "tournamentId": "cmfy37nsa0001300yuyf2vw50",
+    "status": "REGISTERED",
+    "seed": null,
+    "registeredAt": "2025-09-24T14:38:59.209Z",
+    "updatedAt": "2025-09-24T14:38:59.213Z",
+    "user": {
+      "id": "cmfy39uuj0005tw8xlulvl9pa",
+      "username": "player4",
+      "firstName": "Ana",
+      "lastName": "Mart├¡nez",
+      "avatar": null
+    }
+  },
+  {
+    "id": "cmfy3aucl000rtw8xfb7ead64",
+    "userId": "cmfy39vez0006tw8xnud3cevv",
+    "tournamentId": "cmfy37nsa0001300yuyf2vw50",
+    "status": "REGISTERED",
+    "seed": null,
+    "registeredAt": "2025-09-24T14:38:59.874Z",
+    "updatedAt": "2025-09-24T14:38:59.877Z",
+    "user": {
+      "id": "cmfy39vez0006tw8xnud3cevv",
+      "username": "player5",
+      "firstName": "Luis",
+      "lastName": "Rodr├¡guez",
+      "avatar": null
+    }
+  },
+  {
+    "id": "cmfy3auup000vtw8xestpq4kb",
+    "userId": "cmfy39vze0007tw8xq5fh30y6",
+    "tournamentId": "cmfy37nsa0001300yuyf2vw50",
+    "status": "REGISTERED",
+    "seed": null,
+    "registeredAt": "2025-09-24T14:39:00.527Z",
+    "updatedAt": "2025-09-24T14:39:00.53Z",
+    "user": {
+      "id": "cmfy39vze0007tw8xq5fh30y6",
+      "username": "player6",
+      "firstName": "Elena",
+      "lastName": "Fern├índez",
+      "avatar": null
+    }
+  },
+  {
+    "id": "cmfy3avd8000ztw8xiyf8a4yx",
+    "userId": "cmfy39wjn0008tw8xeiafmh6f",
+    "tournamentId": "cmfy37nsa0001300yuyf2vw50",
+    "status": "REGISTERED",
+    "seed": null,
+    "registeredAt": "2025-09-24T14:39:01.193Z",
+    "updatedAt": "2025-09-24T14:39:01.196Z",
+    "user": {
+      "id": "cmfy39wjn0008tw8xeiafmh6f",
+      "username": "player7",
+      "firstName": "Miguel",
+      "lastName": "S├ínchez",
+      "avatar": null
+    }
+  },
+  {
+    "id": "cmfy3avvr0013tw8xebhc3bjn",
+    "userId": "cmfy39x440009tw8xqxo5dtjv",
+    "tournamentId": "cmfy37nsa0001300yuyf2vw50",
+    "status": "REGISTERED",
+    "seed": null,
+    "registeredAt": "2025-09-24T14:39:01.86Z",
+    "updatedAt": "2025-09-24T14:39:01.863Z",
+    "user": {
+      "id": "cmfy39x440009tw8xqxo5dtjv",
+      "username": "player8",
+      "firstName": "Laura",
+      "lastName": "Jim├®nez",
+      "avatar": null
+    }
+  }
+]
