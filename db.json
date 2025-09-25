@@ -39,6 +39,366 @@
             "id": 7,
             "tournament_id": 1,
             "name": "cmfy3avvr0013tw8xebhc3bjn"
+        },
+        {
+            "id": 8,
+            "tournament_id": 1,
+            "name": "player1"
+        },
+        {
+            "id": 9,
+            "tournament_id": 1,
+            "name": "player2"
+        },
+        {
+            "id": 10,
+            "tournament_id": 1,
+            "name": "player3"
+        },
+        {
+            "id": 11,
+            "tournament_id": 1,
+            "name": "player4"
+        },
+        {
+            "id": 12,
+            "tournament_id": null,
+            "name": "player1"
+        },
+        {
+            "id": 13,
+            "tournament_id": null,
+            "name": "user1"
+        },
+        {
+            "id": 14,
+            "tournament_id": null,
+            "name": "user2"
+        },
+        {
+            "id": 15,
+            "tournament_id": null,
+            "name": "user3"
+        },
+        {
+            "id": 16,
+            "tournament_id": null,
+            "name": "player1"
+        },
+        {
+            "id": 17,
+            "tournament_id": null,
+            "name": "user1"
+        },
+        {
+            "id": 18,
+            "tournament_id": null,
+            "name": "user2"
+        },
+        {
+            "id": 19,
+            "tournament_id": null,
+            "name": "user3"
+        },
+        {
+            "id": 20,
+            "tournament_id": null,
+            "name": "player1"
+        },
+        {
+            "id": 21,
+            "tournament_id": null,
+            "name": "user1"
+        },
+        {
+            "id": 22,
+            "tournament_id": null,
+            "name": "user2"
+        },
+        {
+            "id": 23,
+            "tournament_id": null,
+            "name": "user3"
+        },
+        {
+            "id": 24,
+            "tournament_id": null,
+            "name": "player1"
+        },
+        {
+            "id": 25,
+            "tournament_id": null,
+            "name": "user1"
+        },
+        {
+            "id": 26,
+            "tournament_id": null,
+            "name": "user2"
+        },
+        {
+            "id": 27,
+            "tournament_id": null,
+            "name": "user3"
+        },
+        {
+            "id": 28,
+            "tournament_id": null,
+            "name": "player1"
+        },
+        {
+            "id": 29,
+            "tournament_id": null,
+            "name": "user1"
+        },
+        {
+            "id": 30,
+            "tournament_id": null,
+            "name": "user2"
+        },
+        {
+            "id": 31,
+            "tournament_id": null,
+            "name": "user3"
+        },
+        {
+            "id": 32,
+            "tournament_id": null,
+            "name": "player1"
+        },
+        {
+            "id": 33,
+            "tournament_id": null,
+            "name": "user1"
+        },
+        {
+            "id": 34,
+            "tournament_id": null,
+            "name": "user2"
+        },
+        {
+            "id": 35,
+            "tournament_id": null,
+            "name": "user3"
+        },
+        {
+            "id": 36,
+            "tournament_id": null,
+            "name": "player1"
+        },
+        {
+            "id": 37,
+            "tournament_id": null,
+            "name": "user1"
+        },
+        {
+            "id": 38,
+            "tournament_id": null,
+            "name": "user2"
+        },
+        {
+            "id": 39,
+            "tournament_id": null,
+            "name": "user3"
+        },
+        {
+            "id": 40,
+            "tournament_id": null,
+            "name": "player1"
+        },
+        {
+            "id": 41,
+            "tournament_id": null,
+            "name": "user1"
+        },
+        {
+            "id": 42,
+            "tournament_id": null,
+            "name": "user2"
+        },
+        {
+            "id": 43,
+            "tournament_id": null,
+            "name": "user3"
+        },
+        {
+            "id": 44,
+            "tournament_id": null,
+            "name": "player1"
+        },
+        {
+            "id": 45,
+            "tournament_id": null,
+            "name": "user1"
+        },
+        {
+            "id": 46,
+            "tournament_id": null,
+            "name": "user2"
+        },
+        {
+            "id": 47,
+            "tournament_id": null,
+            "name": "user3"
+        },
+        {
+            "id": 48,
+            "tournament_id": null,
+            "name": "player1"
+        },
+        {
+            "id": 49,
+            "tournament_id": null,
+            "name": "user1"
+        },
+        {
+            "id": 50,
+            "tournament_id": null,
+            "name": "user2"
+        },
+        {
+            "id": 51,
+            "tournament_id": null,
+            "name": "user3"
+        },
+        {
+            "id": 52,
+            "tournament_id": null,
+            "name": "player1"
+        },
+        {
+            "id": 53,
+            "tournament_id": null,
+            "name": "user1"
+        },
+        {
+            "id": 54,
+            "tournament_id": null,
+            "name": "user2"
+        },
+        {
+            "id": 55,
+            "tournament_id": null,
+            "name": "user3"
+        },
+        {
+            "id": 56,
+            "tournament_id": null,
+            "name": "player1"
+        },
+        {
+            "id": 57,
+            "tournament_id": null,
+            "name": "user1"
+        },
+        {
+            "id": 58,
+            "tournament_id": null,
+            "name": "user2"
+        },
+        {
+            "id": 59,
+            "tournament_id": null,
+            "name": "user3"
+        },
+        {
+            "id": 60,
+            "tournament_id": null,
+            "name": "player1"
+        },
+        {
+            "id": 61,
+            "tournament_id": null,
+            "name": "user1"
+        },
+        {
+            "id": 62,
+            "tournament_id": null,
+            "name": "user2"
+        },
+        {
+            "id": 63,
+            "tournament_id": null,
+            "name": "user3"
+        },
+        {
+            "id": 64,
+            "tournament_id": null,
+            "name": "player1"
+        },
+        {
+            "id": 65,
+            "tournament_id": null,
+            "name": "user1"
+        },
+        {
+            "id": 66,
+            "tournament_id": null,
+            "name": "user2"
+        },
+        {
+            "id": 67,
+            "tournament_id": null,
+            "name": "user3"
+        },
+        {
+            "id": 68,
+            "tournament_id": null,
+            "name": "Player1"
+        },
+        {
+            "id": 69,
+            "tournament_id": null,
+            "name": "Player2"
+        },
+        {
+            "id": 70,
+            "tournament_id": null,
+            "name": "Player3"
+        },
+        {
+            "id": 71,
+            "tournament_id": null,
+            "name": "Player4"
+        },
+        {
+            "id": 72,
+            "tournament_id": null,
+            "name": "player1"
+        },
+        {
+            "id": 73,
+            "tournament_id": null,
+            "name": "user1"
+        },
+        {
+            "id": 74,
+            "tournament_id": null,
+            "name": "user2"
+        },
+        {
+            "id": 75,
+            "tournament_id": null,
+            "name": "user3"
+        },
+        {
+            "id": 76,
+            "tournament_id": 215051523,
+            "name": "player1"
+        },
+        {
+            "id": 77,
+            "tournament_id": 215051523,
+            "name": "user1"
+        },
+        {
+            "id": 78,
+            "tournament_id": 215051523,
+            "name": "user2"
+        },
+        {
+            "id": 79,
+            "tournament_id": 215051523,
+            "name": "user3"
         }
     ],
     "stage": [
@@ -58,12 +418,56 @@
                 "matchesChildCount": 0,
                 "size": 8
             }
+        },
+        {
+            "id": 1,
+            "tournament_id": 1,
+            "name": "Bracket Principal - Torneo cmfyerxec00017mm275akac1w",
+            "type": "single_elimination",
+            "number": 2,
+            "settings": {
+                "seedOrdering": [
+                    "natural"
+                ],
+                "balanceByes": true,
+                "skipFirstRound": false,
+                "consolationFinal": false,
+                "matchesChildCount": 0,
+                "size": 4
+            }
+        },
+        {
+            "id": 2,
+            "tournament_id": 215051523,
+            "name": "Bracket Principal - Torneo cmfyn99g60001hgpvby13ie8z",
+            "type": "single_elimination",
+            "number": 1,
+            "settings": {
+                "seedOrdering": [
+                    "natural"
+                ],
+                "balanceByes": true,
+                "skipFirstRound": false,
+                "consolationFinal": false,
+                "matchesChildCount": 0,
+                "size": 4
+            }
         }
     ],
     "group": [
         {
             "id": 0,
             "stage_id": 0,
+            "number": 1
+        },
+        {
+            "id": 1,
+            "stage_id": 1,
+            "number": 1
+        },
+        {
+            "id": 2,
+            "stage_id": 2,
             "number": 1
         }
     ],
@@ -85,6 +489,30 @@
             "number": 3,
             "stage_id": 0,
             "group_id": 0
+        },
+        {
+            "id": 3,
+            "number": 1,
+            "stage_id": 1,
+            "group_id": 1
+        },
+        {
+            "id": 4,
+            "number": 2,
+            "stage_id": 1,
+            "group_id": 1
+        },
+        {
+            "id": 5,
+            "number": 1,
+            "stage_id": 2,
+            "group_id": 2
+        },
+        {
+            "id": 6,
+            "number": 2,
+            "stage_id": 2,
+            "group_id": 2
         }
     ],
     "match": [
@@ -209,6 +637,112 @@
             },
             "opponent2": {
                 "id": null
+            }
+        },
+        {
+            "id": 7,
+            "number": 1,
+            "stage_id": 1,
+            "group_id": 1,
+            "round_id": 3,
+            "child_count": 0,
+            "status": 2,
+            "opponent1": {
+                "id": 8,
+                "position": 1
+            },
+            "opponent2": {
+                "id": 9,
+                "position": 2
+            }
+        },
+        {
+            "id": 8,
+            "number": 2,
+            "stage_id": 1,
+            "group_id": 1,
+            "round_id": 3,
+            "child_count": 0,
+            "status": 2,
+            "opponent1": {
+                "id": 10,
+                "position": 3
+            },
+            "opponent2": {
+                "id": 11,
+                "position": 4
+            }
+        },
+        {
+            "id": 9,
+            "number": 1,
+            "stage_id": 1,
+            "group_id": 1,
+            "round_id": 4,
+            "child_count": 0,
+            "status": 0,
+            "opponent1": {
+                "id": null
+            },
+            "opponent2": {
+                "id": null
+            }
+        },
+        {
+            "id": 10,
+            "number": 1,
+            "stage_id": 2,
+            "group_id": 2,
+            "round_id": 5,
+            "child_count": 0,
+            "status": 4,
+            "opponent1": {
+                "id": 76,
+                "position": 1,
+                "score": 2,
+                "result": "win"
+            },
+            "opponent2": {
+                "id": 77,
+                "position": 2,
+                "score": 1,
+                "result": "loss"
+            }
+        },
+        {
+            "id": 11,
+            "number": 2,
+            "stage_id": 2,
+            "group_id": 2,
+            "round_id": 5,
+            "child_count": 0,
+            "status": 4,
+            "opponent1": {
+                "id": 78,
+                "position": 3,
+                "score": 1,
+                "result": "loss"
+            },
+            "opponent2": {
+                "id": 79,
+                "position": 4,
+                "score": 3,
+                "result": "win"
+            }
+        },
+        {
+            "id": 12,
+            "number": 1,
+            "stage_id": 2,
+            "group_id": 2,
+            "round_id": 6,
+            "child_count": 0,
+            "status": 2,
+            "opponent1": {
+                "id": 76
+            },
+            "opponent2": {
+                "id": 79
             }
         }
     ],

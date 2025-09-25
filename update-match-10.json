@@ -1,0 +1,10 @@
+{
+  "opponent1": {
+    "score": 2,
+    "result": "win"
+  },
+  "opponent2": {
+    "score": 1,
+    "result": "loss"
+  }
+}

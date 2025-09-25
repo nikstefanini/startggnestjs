@@ -86,4 +86,21 @@ export class TournamentsController {
   addParticipant(@Param('id') id: string, @Body() participantDto: { userId: string }) {
     return this.tournamentsService.addParticipant(id, participantDto.userId);
   }
+
+  /**
+   * Iniciar un torneo
+   */
+  @Post(':id/start')
+  @HttpCode(HttpStatus.OK)
+  async startTournament(@Param('id') id: string) {
+    return await this.tournamentsService.startTournament(id);
+  }
+
+  /**
+   * Obtener el bracket de un torneo
+   */
+  @Get(':id/bracket')
+  async getTournamentBracket(@Param('id') id: string) {
+    return await this.tournamentsService.getTournamentBracket(id);
+  }
 }

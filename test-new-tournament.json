@@ -1,0 +1,21 @@
+{
+  "name": "Torneo de Prueba Brackets",
+  "slug": "torneo-prueba-brackets",
+  "description": "Torneo para probar la generación automática de brackets",
+  "game": "Street Fighter 6",
+  "format": "SINGLE_ELIMINATION",
+  "type": "SINGLES",
+  "organizerId": "cmfy39t480002tw8xha0qxtrm",
+  "startDate": "2025-03-15T10:00:00.000Z",
+  "endDate": "2025-03-15T18:00:00.000Z",
+  "registrationStart": "2025-03-01T00:00:00.000Z",
+  "registrationEnd": "2025-03-14T23:59:59.000Z",
+  "maxParticipants": 8,
+  "entryFee": 0,
+  "venue": "Online",
+  "city": "Online",
+  "country": "Global",
+  "timezone": "UTC",
+  "isOnline": true,
+  "isPublic": true
+}
