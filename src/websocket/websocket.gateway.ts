@@ -11,13 +11,13 @@ import { Server, Socket } from 'socket.io';
 import { Logger } from '@nestjs/common';
 
 interface JoinTournamentDto {
-  tournamentId: number;
+  tournamentId: string | number;
   userId?: string;
 }
 
 interface MatchUpdateDto {
-  tournamentId: number;
-  matchId: number;
+  tournamentId: string | number;
+  matchId: string | number;
   opponent1?: {
     score?: number;
     result?: 'win' | 'loss';
@@ -49,7 +49,7 @@ export class WebsocketGateway implements OnGatewayConnection, OnGatewayDisconnec
 
   private logger: Logger = new Logger('WebsocketGateway');
   private connectedClients: Map<string, Socket> = new Map();
-  private tournamentRooms: Map<number, Set<string>> = new Map();
+  private tournamentRooms: Map<string | number, Set<string>> = new Map();
 
   handleConnection(client: Socket) {
     this.logger.log(`Cliente conectado: ${client.id}`);

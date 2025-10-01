@@ -42,8 +42,8 @@ export class BracketsController {
    * Obtener información completa de un torneo
    */
   @Get(':tournamentId')
-  async getTournament(@Param('tournamentId', ParseIntPipe) tournamentId: number) {
-    return await this.bracketsService.getTournament(tournamentId);
+  async getTournament(@Param('tournamentId') tournamentId: string) {
+    return await this.bracketsService.getTournamentByStringId(tournamentId);
   }
 
   /**
@@ -58,24 +58,24 @@ export class BracketsController {
    * Obtener datos del bracket para visualización
    */
   @Get(':tournamentId/bracket-data')
-  async getBracketData(@Param('tournamentId', ParseIntPipe) tournamentId: number) {
-    return await this.bracketsService.getBracketData(tournamentId);
+  async getBracketData(@Param('tournamentId') tournamentId: string) {
+    return await this.bracketsService.getBracketDataByStringId(tournamentId);
   }
 
   /**
    * Obtener todos los matches de un torneo
    */
   @Get(':tournamentId/matches')
-  async getMatches(@Param('tournamentId', ParseIntPipe) tournamentId: number) {
-    return await this.bracketsService.getMatches(tournamentId);
+  async getMatches(@Param('tournamentId') tournamentId: string) {
+    return await this.bracketsService.getMatchesByStringId(tournamentId);
   }
 
   /**
    * Obtener estadísticas del torneo
    */
   @Get(':tournamentId/stats')
-  async getTournamentStats(@Param('tournamentId', ParseIntPipe) tournamentId: number) {
-    return await this.bracketsService.getTournamentStats(tournamentId);
+  async getTournamentStats(@Param('tournamentId') tournamentId: string) {
+    return await this.bracketsService.getTournamentStatsByStringId(tournamentId);
   }
 
   /**
@@ -94,8 +94,8 @@ export class BracketsController {
    * Resetear un torneo (eliminar todos los resultados)
    */
   @Delete(':tournamentId/reset')
-  async resetTournament(@Param('tournamentId', ParseIntPipe) tournamentId: number) {
-    return await this.bracketsService.resetTournament(tournamentId);
+  async resetTournament(@Param('tournamentId') tournamentId: string) {
+    return await this.bracketsService.resetTournamentByStringId(tournamentId);
   }
 
   /**

@@ -654,4 +654,84 @@ export class BracketsService {
       throw new BadRequestException(`Error al generar bracket automático: ${error.message}`);
     }
   }
+
+  /**
+   * Obtener datos del bracket por ID de torneo string
+   */
+  async getBracketDataByStringId(tournamentId: string) {
+    try {
+      const numericTournamentId = Math.abs(tournamentId.hashCode());
+      
+      // Buscar el stage que corresponde a este torneo
+      const stages = await this.manager.storage.select('stage', { tournament_id: numericTournamentId });
+      if (!stages || stages.length === 0) {
+        throw new BadRequestException('No se encontró bracket para este torneo');
+      }
+      
+      const stageId = Number(stages[0].id);
+      return await this.getBracketData(stageId);
+    } catch (error) {
+      throw new BadRequestException(`Error al obtener datos del bracket: ${error.message}`);
+    }
+  }
+
+  /**
+   * Obtener matches por ID de torneo string
+   */
+  async getMatchesByStringId(tournamentId: string) {
+    try {
+      const numericTournamentId = Math.abs(tournamentId.hashCode());
+      
+      // Buscar el stage que corresponde a este torneo
+      const stages = await this.manager.storage.select('stage', { tournament_id: numericTournamentId });
+      if (!stages || stages.length === 0) {
+        throw new BadRequestException('No se encontró bracket para este torneo');
+      }
+      
+      const stageId = Number(stages[0].id);
+      return await this.getMatches(stageId);
+    } catch (error) {
+      throw new BadRequestException(`Error al obtener matches: ${error.message}`);
+    }
+  }
+
+  /**
+   * Obtener estadísticas por ID de torneo string
+   */
+  async getTournamentStatsByStringId(tournamentId: string) {
+    try {
+      const numericTournamentId = Math.abs(tournamentId.hashCode());
+      
+      // Buscar el stage que corresponde a este torneo
+      const stages = await this.manager.storage.select('stage', { tournament_id: numericTournamentId });
+      if (!stages || stages.length === 0) {
+        throw new BadRequestException('No se encontró bracket para este torneo');
+      }
+      
+      const stageId = Number(stages[0].id);
+      return await this.getTournamentStats(stageId);
+    } catch (error) {
+      throw new BadRequestException(`Error al obtener estadísticas: ${error.message}`);
+    }
+  }
+
+  /**
+   * Resetear torneo por ID de torneo string
+   */
+  async resetTournamentByStringId(tournamentId: string) {
+    try {
+      const numericTournamentId = Math.abs(tournamentId.hashCode());
+      
+      // Buscar el stage que corresponde a este torneo
+      const stages = await this.manager.storage.select('stage', { tournament_id: numericTournamentId });
+      if (!stages || stages.length === 0) {
+        throw new BadRequestException('No se encontró bracket para este torneo');
+      }
+      
+      const stageId = Number(stages[0].id);
+      return await this.resetTournament(stageId);
+    } catch (error) {
+      throw new BadRequestException(`Error al resetear torneo: ${error.message}`);
+    }
+  }
 }
