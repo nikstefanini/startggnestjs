@@ -1,0 +1,20 @@
+{
+  "name": "Torneo de Prueba Brackets 2",
+  "slug": "torneo-prueba-brackets-2",
+  "description": "Segundo torneo para probar la generación de brackets",
+  "game": "Street Fighter 6",
+  "format": "SINGLE_ELIMINATION",
+  "type": "SINGLES",
+  "startDate": "2025-04-15T10:00:00.000Z",
+  "endDate": "2025-04-15T18:00:00.000Z",
+  "registrationStart": "2025-04-01T00:00:00.000Z",
+  "registrationEnd": "2025-04-14T23:59:59.000Z",
+  "maxParticipants": 16,
+  "entryFee": 0,
+  "venue": "Online",
+  "city": "Online",
+  "country": "Global",
+  "timezone": "UTC",
+  "isOnline": true,
+  "isPublic": true
+}

@@ -80,6 +80,7 @@ export class CreateTournamentDto {
   @IsBoolean()
   isPublic?: boolean;
 
+  @IsOptional()
   @IsString()
-  organizerId: string;
+  organizerId?: string;
 }

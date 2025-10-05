@@ -11,6 +11,7 @@ import {
   Request,
   HttpCode,
   HttpStatus,
+  BadRequestException,
 } from '@nestjs/common';
 import { TournamentsService } from './tournaments.service';
 import { CreateTournamentDto } from './dto/create-tournament.dto';
@@ -147,5 +148,18 @@ export class TournamentsController {
       success: true,
       message: 'Torneo eliminado exitosamente',
     };
+  }
+
+  /**
+   * Obtener el bracket de un torneo
+   */
+  @Get(':id/bracket')
+  async getBracket(@Param('id') id: string) {
+    try {
+      const result = await this.tournamentsService.getTournamentBracket(id);
+      return result;
+    } catch (error) {
+      throw new BadRequestException(`Error getting tournament bracket: ${error.message}`);
+    }
   }
 }

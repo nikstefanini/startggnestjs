@@ -1,5 +1,5 @@
 import { Injectable, NotFoundException, BadRequestException, Inject, forwardRef } from '@nestjs/common';
-import { PrismaService } from '../prisma/prisma.service';
+import { PrismaService } from '../common/prisma/prisma.service';
 import { CreateTournamentDto } from './dto/create-tournament.dto';
 import { UpdateTournamentDto } from './dto/update-tournament.dto';
 import { ParticipantDto } from './dto/participant.dto';
@@ -547,9 +547,7 @@ export class TournamentsService {
           city: startggTournament.city || undefined,
           country: startggTournament.countryCode || undefined,
           maxParticipants: startggTournament.numAttendees || undefined,
-          // Agregar campos específicos de Start.gg
-          startggSlug: startggSlug,
-          startggId: startggTournament.id?.toString(),
+          // Campos específicos de Start.gg se omiten porque no existen en el modelo Prisma
         },
         include: {
           organizer: true,
@@ -627,9 +625,11 @@ export class TournamentsService {
           slug: startggSlug,
           description: 'Torneo importado desde Start.gg',
           game: 'Unknown', // Por defecto
-          type: TournamentType.TOURNAMENT,
+          // El esquema Prisma no define "TOURNAMENT" en TournamentType; usamos SINGLES por defecto
+          type: TournamentType.SINGLES,
           format: TournamentFormat.SINGLE_ELIMINATION,
-          status: TournamentStatus.DRAFT,
+          // Estado inicial válido según el enum de Prisma
+          status: TournamentStatus.UPCOMING,
           organizer: {
             connect: {
               id: organizerId
@@ -642,11 +642,9 @@ export class TournamentsService {
           country: startggTournament.countryCode || undefined,
           maxParticipants: startggTournament.numAttendees || 64,
           entryFee: 0, // Por defecto
-          prizePool: 0, // Por defecto
-          rules: 'Reglas importadas desde Start.gg',
-          // Campos específicos de Start.gg
-          startggSlug: startggSlug,
-          startggId: startggTournament.id?.toString(),
+          // prizePool no existe en el modelo Tournament del esquema Prisma; se elimina
+          // rules no existe en el modelo Tournament; se omite
+          // Campos específicos de Start.gg se omiten porque no existen en el modelo Prisma
         },
         include: {
           organizer: {
@@ -668,7 +666,7 @@ export class TournamentsService {
             const event = await this.prisma.event.create({
               data: {
                 name: startggEvent.name,
-                description: `Evento importado desde Start.gg: ${startggEvent.name}`,
+                // description no existe en el modelo Event; se omite
                 tournamentId: newTournament.id,
                 game: startggEvent.videogame?.name || 'Unknown',
                 slug: startggEvent.slug || startggEvent.name.toLowerCase().replace(/\s+/g, '-'),
@@ -676,7 +674,7 @@ export class TournamentsService {
                 type: TournamentType.SINGLES,
                 startDate: startggEvent.startAt ? new Date(startggEvent.startAt * 1000) : new Date(),
                 maxEntrants: startggEvent.numEntrants || 32,
-                startggEventId: startggEvent.id?.toString(),
+                // startggEventId no existe en el modelo Event; se omite
               }
             });
             importedEvents.push(event);

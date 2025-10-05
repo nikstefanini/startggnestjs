@@ -2,7 +2,7 @@ import { Injectable, BadRequestException, NotFoundException, Inject, forwardRef 
 import { BracketsManager } from 'brackets-manager';
 import { JsonDatabase } from 'brackets-json-db';
 import { WebsocketGateway } from '../websocket/websocket.gateway';
-import { PrismaService } from '../prisma/prisma.service';
+import { PrismaService } from '../common/prisma/prisma.service';
 
 // Extensión para String para generar hash codes
 declare global {

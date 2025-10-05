@@ -13,7 +13,8 @@ import {
   Patch,
   UseGuards,
   ValidationPipe,
-  BadRequestException
+  BadRequestException,
+  Request
 } from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { TournamentsService } from './tournaments.service';
@@ -30,8 +31,13 @@ export class TournamentsController {
   @Post()
   @UseGuards(JwtAuthGuard)
   @HttpCode(HttpStatus.CREATED)
-  async createTournament(@Body(ValidationPipe) createTournamentDto: CreateTournamentDto) {
+  async createTournament(
+    @Body(ValidationPipe) createTournamentDto: CreateTournamentDto,
+    @Request() req: any,
+  ) {
     try {
+      // Asignar automáticamente el organizerId desde el usuario autenticado
+      createTournamentDto.organizerId = req?.user?.id;
       return await this.tournamentsService.createTournament(createTournamentDto);
     } catch (error) {
       throw new BadRequestException(`Error creating tournament: ${error.message}`);

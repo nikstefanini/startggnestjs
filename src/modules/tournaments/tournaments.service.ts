@@ -1,13 +1,18 @@
-import { Injectable, NotFoundException, ForbiddenException, BadRequestException } from '@nestjs/common';
+import { Injectable, NotFoundException, ForbiddenException, BadRequestException, Inject, forwardRef } from '@nestjs/common';
 import { PrismaService } from '../../common/prisma/prisma.service';
 import { CreateTournamentDto } from './dto/create-tournament.dto';
 import { UpdateTournamentDto } from './dto/update-tournament.dto';
 import { TournamentFiltersDto } from './dto/tournament-filters.dto';
 import { Tournament, TournamentStatus } from '@prisma/client';
+import { BracketsService } from '../../brackets/brackets.service';
 
 @Injectable()
 export class TournamentsService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    @Inject(forwardRef(() => BracketsService))
+    private bracketsService: BracketsService,
+  ) {}
 
   async create(createTournamentDto: CreateTournamentDto, organizerId: string): Promise<Tournament> {
     // Validar fechas
@@ -493,6 +498,91 @@ export class TournamentsService {
         name: tournament.name,
         participantCount: tournament._count.participants + 1,
       }
+    };
+  }
+
+  /**
+   * Obtener información de bracket para un torneo
+   * Devuelve hasBracket=true si el torneo está en progreso/completado y existe bracket generado.
+   */
+  async getTournamentBracket(id: string) {
+    // Verificar que el torneo existe
+    const tournament = await this.prisma.tournament.findUnique({
+      where: { id },
+      include: {
+        participants: true,
+      },
+    });
+
+    if (!tournament) {
+      throw new NotFoundException('Torneo no encontrado');
+    }
+
+    // Un bracket solo está disponible si el torneo está iniciado o completado
+    const hasBracketByStatus =
+      tournament.status === TournamentStatus.IN_PROGRESS ||
+      tournament.status === TournamentStatus.COMPLETED;
+
+    if (!hasBracketByStatus) {
+      return {
+        success: false,
+        hasBracket: false,
+        message:
+          'El torneo aún no tiene brackets disponibles. Debe estar iniciado para generar brackets.',
+        tournament: {
+          id: tournament.id,
+          name: tournament.name,
+          status: tournament.status,
+          participantCount: tournament.participants.length,
+        },
+      };
+    }
+
+    // Intentar obtener el bracket generado desde BracketsService
+    try {
+      const bracketData = await this.bracketsService.getTournamentByStringId(id);
+      if (bracketData?.success && bracketData?.bracket) {
+        return {
+          success: true,
+          hasBracket: true,
+          data: {
+            tournament: {
+              id: tournament.id,
+              name: tournament.name,
+              status: tournament.status,
+              type: tournament.type,
+            },
+            participants: bracketData.bracket.participant || [],
+            matches: bracketData.bracket.match || [],
+            rounds: bracketData.bracket.round || [],
+            groups: bracketData.bracket.group || [],
+          },
+        };
+      }
+    } catch (err) {
+      // Si no hay bracket, devolver estructura básica
+    }
+
+    return {
+      success: true,
+      hasBracket: false,
+      message:
+        'Torneo encontrado pero no tiene bracket generado. Use el endpoint de generación de brackets.',
+      data: {
+        tournament: {
+          id: tournament.id,
+          name: tournament.name,
+          status: tournament.status,
+          type: tournament.type,
+        },
+        participants: tournament.participants.map((p: any) => ({
+          id: p.id,
+          name: (p as any).user?.username || '',
+          seed: p.seed || 0,
+        })),
+        matches: [],
+        rounds: [],
+      },
     };
   }
 }
