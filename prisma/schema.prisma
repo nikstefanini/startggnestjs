@@ -234,6 +234,7 @@ enum UserRole {
   ORGANIZER
   ADMIN
   SUPER_ADMIN
+  MODERATOR
 }
 
 enum TournamentFormat {

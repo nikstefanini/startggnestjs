@@ -3,8 +3,9 @@ import { PrismaService } from '../prisma/prisma.service';
 import { CreateTournamentDto } from './dto/create-tournament.dto';
 import { UpdateTournamentDto } from './dto/update-tournament.dto';
 import { ParticipantDto } from './dto/participant.dto';
-import { TournamentStatus } from '@prisma/client';
+import { TournamentStatus, TournamentType, TournamentFormat } from '@prisma/client';
 import { BracketsService } from '../brackets/brackets.service';
+import { StartggService } from '../startgg/startgg.service';
 
 // Extensión para generar hash de strings
 declare global {
@@ -29,7 +30,8 @@ export class TournamentsService {
   constructor(
     private prisma: PrismaService,
     @Inject(forwardRef(() => BracketsService))
-    private bracketsService: BracketsService
+    private bracketsService: BracketsService,
+    private startggService: StartggService,
   ) {}
 
   async createTournament(createTournamentDto: CreateTournamentDto) {
@@ -66,21 +68,64 @@ export class TournamentsService {
     }
   }
 
-  async findAll() {
-    return this.prisma.tournament.findMany({
-      include: {
-        organizer: {
-          select: {
-            id: true,
-            username: true,
-            firstName: true,
-            lastName: true,
+  async findAll(params?: { page?: number; limit?: number; status?: string; game?: string; search?: string }) {
+    const page = params?.page && params.page > 0 ? params.page : 1;
+    const limit = params?.limit && params.limit > 0 && params.limit <= 100 ? params.limit : 10;
+    const skip = (page - 1) * limit;
+
+    const where: any = {};
+
+    if (params?.status) {
+      // Validar y asignar estado si coincide con el enum
+      const statuses = Object.values(TournamentStatus);
+      if (statuses.includes(params.status as TournamentStatus)) {
+        where.status = params.status as TournamentStatus;
+      }
+    }
+
+    if (params?.game) {
+      where.game = params.game;
+    }
+
+    if (params?.search) {
+      where.OR = [
+        { name: { contains: params.search, mode: 'insensitive' } },
+        { slug: { contains: params.search, mode: 'insensitive' } },
+        { city: { contains: params.search, mode: 'insensitive' } },
+      ];
+    }
+
+    const [items, total] = await Promise.all([
+      this.prisma.tournament.findMany({
+        where,
+        skip,
+        take: limit,
+        orderBy: { startDate: 'desc' },
+        include: {
+          organizer: {
+            select: {
+              id: true,
+              username: true,
+              firstName: true,
+              lastName: true,
+            },
           },
+          events: true,
+          participants: true,
         },
-        events: true,
-        participants: true,
+      }),
+      this.prisma.tournament.count({ where }),
+    ]);
+
+    return {
+      success: true,
+      data: items,
+      pagination: {
+        page,
+        limit,
+        total,
       },
-    });
+    };
   }
 
   async findOne(id: string) {
@@ -322,7 +367,7 @@ export class TournamentsService {
         bracketResult = await this.bracketsService.generateTournamentBracket(
           id,
           updatedTournament.participants,
-          updatedTournament.format || 'single_elimination'
+          updatedTournament.format || TournamentFormat.SINGLE_ELIMINATION
         );
       } catch (bracketError) {
         // Si falla la generación de brackets, log el error pero no fallar el inicio del torneo
@@ -476,6 +521,189 @@ export class TournamentsService {
         throw error;
       }
       throw new BadRequestException('Error al obtener el bracket del torneo: ' + error.message);
+    }
+  }
+
+  /**
+   * Sincronizar torneo con Start.gg
+   */
+  async syncWithStartgg(tournamentId: string, startggSlug: string) {
+    try {
+      // Obtener datos del torneo desde Start.gg
+      const startggTournament = await this.startggService.getTournament(startggSlug);
+      
+      if (!startggTournament) {
+        throw new BadRequestException('Torneo no encontrado en Start.gg');
+      }
+
+      // Actualizar el torneo local con datos de Start.gg
+      const updatedTournament = await this.prisma.tournament.update({
+        where: { id: tournamentId },
+        data: {
+          name: startggTournament.name,
+          startDate: startggTournament.startAt ? new Date(startggTournament.startAt * 1000) : undefined,
+          endDate: startggTournament.endAt ? new Date(startggTournament.endAt * 1000) : undefined,
+          venue: startggTournament.venueAddress || undefined,
+          city: startggTournament.city || undefined,
+          country: startggTournament.countryCode || undefined,
+          maxParticipants: startggTournament.numAttendees || undefined,
+          // Agregar campos específicos de Start.gg
+          startggSlug: startggSlug,
+          startggId: startggTournament.id?.toString(),
+        },
+        include: {
+          organizer: true,
+          events: true,
+          participants: true
+        }
+      });
+
+      return {
+        success: true,
+        message: 'Torneo sincronizado exitosamente con Start.gg',
+        tournament: updatedTournament,
+        startggData: {
+          id: startggTournament.id,
+          name: startggTournament.name,
+          slug: startggSlug,
+          numAttendees: startggTournament.numAttendees,
+          events: startggTournament.events?.length || 0
+        }
+      };
+    } catch (error) {
+      if (error instanceof BadRequestException) {
+        throw error;
+      }
+      throw new BadRequestException(`Error sincronizando con Start.gg: ${error.message}`);
+    }
+  }
+
+  /**
+   * Buscar torneos en Start.gg
+   */
+  async searchStartggTournaments(query: string, page: number = 1, limit: number = 20) {
+    try {
+      const tournaments = await this.startggService.searchTournaments(query, page, limit);
+      
+      return {
+        success: true,
+        data: tournaments,
+        pagination: {
+          page,
+          limit,
+          total: tournaments.pageInfo?.total ?? tournaments.tournaments.length
+        }
+      };
+    } catch (error) {
+      throw new BadRequestException(`Error buscando torneos en Start.gg: ${error.message}`);
+    }
+  }
+
+  /**
+   * Importar torneo desde Start.gg
+   */
+  async importFromStartgg(startggSlug: string, organizerId: string) {
+    try {
+      // Obtener datos del torneo desde Start.gg
+      const startggTournament = await this.startggService.getTournament(startggSlug);
+      
+      if (!startggTournament) {
+        throw new BadRequestException('Torneo no encontrado en Start.gg');
+      }
+
+      // Verificar si el organizador existe
+      const organizer = await this.prisma.user.findUnique({
+        where: { id: organizerId }
+      });
+
+      if (!organizer) {
+        throw new BadRequestException('Organizador no encontrado');
+      }
+
+      // Crear el torneo en la base de datos local
+      const newTournament = await this.prisma.tournament.create({
+        data: {
+          name: startggTournament.name,
+          slug: startggSlug,
+          description: 'Torneo importado desde Start.gg',
+          game: 'Unknown', // Por defecto
+          type: TournamentType.TOURNAMENT,
+          format: TournamentFormat.SINGLE_ELIMINATION,
+          status: TournamentStatus.DRAFT,
+          organizer: {
+            connect: {
+              id: organizerId
+            }
+          },
+          startDate: startggTournament.startAt ? new Date(startggTournament.startAt * 1000) : new Date(),
+          endDate: startggTournament.endAt ? new Date(startggTournament.endAt * 1000) : undefined,
+          venue: startggTournament.venueAddress || undefined,
+          city: startggTournament.city || undefined,
+          country: startggTournament.countryCode || undefined,
+          maxParticipants: startggTournament.numAttendees || 64,
+          entryFee: 0, // Por defecto
+          prizePool: 0, // Por defecto
+          rules: 'Reglas importadas desde Start.gg',
+          // Campos específicos de Start.gg
+          startggSlug: startggSlug,
+          startggId: startggTournament.id?.toString(),
+        },
+        include: {
+          organizer: {
+            select: {
+              id: true,
+              username: true,
+              firstName: true,
+              lastName: true,
+            }
+          }
+        }
+      });
+
+      // Importar eventos si existen
+      let importedEvents = [];
+      if (startggTournament.events?.length > 0) {
+        for (const startggEvent of startggTournament.events) {
+          try {
+            const event = await this.prisma.event.create({
+              data: {
+                name: startggEvent.name,
+                description: `Evento importado desde Start.gg: ${startggEvent.name}`,
+                tournamentId: newTournament.id,
+                game: startggEvent.videogame?.name || 'Unknown',
+                slug: startggEvent.slug || startggEvent.name.toLowerCase().replace(/\s+/g, '-'),
+                format: TournamentFormat.SINGLE_ELIMINATION,
+                type: TournamentType.SINGLES,
+                startDate: startggEvent.startAt ? new Date(startggEvent.startAt * 1000) : new Date(),
+                maxEntrants: startggEvent.numEntrants || 32,
+                startggEventId: startggEvent.id?.toString(),
+              }
+            });
+            importedEvents.push(event);
+          } catch (eventError) {
+            console.error(`Error importando evento ${startggEvent.name}:`, eventError.message);
+          }
+        }
+      }
+
+      return {
+        success: true,
+        message: 'Torneo importado exitosamente desde Start.gg',
+        tournament: newTournament,
+        importedEvents: importedEvents,
+        startggData: {
+          id: startggTournament.id,
+          name: startggTournament.name,
+          slug: startggSlug,
+          numAttendees: startggTournament.numAttendees,
+          eventsImported: importedEvents.length
+        }
+      };
+    } catch (error) {
+      if (error instanceof BadRequestException) {
+        throw error;
+      }
+      throw new BadRequestException(`Error importando torneo desde Start.gg: ${error.message}`);
     }
   }
 }

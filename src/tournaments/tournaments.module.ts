@@ -1,16 +1,18 @@
 import { Module, forwardRef } from '@nestjs/common';
-import { TournamentsController } from './tournaments.controller';
 import { TournamentsService } from './tournaments.service';
-import { PrismaModule } from '../common/prisma/prisma.module';
+import { TournamentsController } from './tournaments.controller';
+import { PrismaModule } from '../prisma/prisma.module';
 import { BracketsModule } from '../brackets/brackets.module';
+import { StartggModule } from '../startgg/startgg.module';
 
 @Module({
   imports: [
     PrismaModule,
-    forwardRef(() => BracketsModule)
+    forwardRef(() => BracketsModule),
+    StartggModule,
   ],
   controllers: [TournamentsController],
   providers: [TournamentsService],
-  exports: [TournamentsService]
+  exports: [TournamentsService],
 })
 export class TournamentsModule {}
