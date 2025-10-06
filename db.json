@@ -1898,14 +1898,18 @@
             "group_id": 11,
             "round_id": 31,
             "child_count": 0,
-            "status": 2,
+            "status": 5,
             "opponent1": {
                 "id": 96,
-                "position": 1
+                "position": 1,
+                "score": 2,
+                "result": "win"
             },
             "opponent2": {
                 "id": 97,
-                "position": 2
+                "position": 2,
+                "score": 1,
+                "result": "loss"
             }
         },
         {
@@ -1915,14 +1919,18 @@
             "group_id": 11,
             "round_id": 31,
             "child_count": 0,
-            "status": 2,
+            "status": 5,
             "opponent1": {
                 "id": 98,
-                "position": 3
+                "position": 3,
+                "score": 2,
+                "result": "win"
             },
             "opponent2": {
                 "id": 99,
-                "position": 4
+                "position": 4,
+                "score": 0,
+                "result": "loss"
             }
         },
         {
@@ -1932,12 +1940,16 @@
             "group_id": 11,
             "round_id": 32,
             "child_count": 0,
-            "status": 0,
+            "status": 5,
             "opponent1": {
-                "id": null
+                "id": 96,
+                "score": 2,
+                "result": "win"
             },
             "opponent2": {
-                "id": null
+                "id": 98,
+                "score": 0,
+                "result": "loss"
             }
         },
         {
