@@ -502,6 +502,95 @@ export class TournamentsService {
   }
 
   /**
+   * Iniciar un torneo: valida permisos, cambia estado y genera bracket automáticamente
+   */
+  async startTournament(id: string, userId: string) {
+    // Verificar que el torneo existe
+    const tournament = await this.prisma.tournament.findUnique({
+      where: { id },
+      include: {
+        participants: {
+          include: {
+            user: {
+              select: { id: true, username: true, firstName: true, lastName: true }
+            }
+          }
+        },
+        organizer: { select: { id: true, username: true } },
+        events: true,
+      },
+    });
+
+    if (!tournament) {
+      throw new NotFoundException('Torneo no encontrado');
+    }
+
+    // Solo el organizador puede iniciar el torneo
+    if (tournament.organizerId !== userId) {
+      throw new ForbiddenException('Solo el organizador puede iniciar este torneo');
+    }
+
+    // Verificar que el torneo no esté ya iniciado o completado
+    if (tournament.status === TournamentStatus.IN_PROGRESS) {
+      throw new BadRequestException('El torneo ya está iniciado');
+    }
+    if (tournament.status === TournamentStatus.COMPLETED) {
+      throw new BadRequestException('El torneo ya está completado');
+    }
+
+    // Verificar que hay suficientes participantes
+    if (!tournament.participants || tournament.participants.length < 2) {
+      throw new BadRequestException('Se necesitan al menos 2 participantes para iniciar el torneo');
+    }
+
+    // Actualizar estado y fecha de inicio
+    const updatedTournament = await this.prisma.tournament.update({
+      where: { id },
+      data: {
+        status: TournamentStatus.IN_PROGRESS,
+        startDate: new Date(),
+      },
+      include: {
+        organizer: { select: { id: true, username: true } },
+        events: true,
+        participants: {
+          include: {
+            user: { select: { id: true, username: true, firstName: true, lastName: true } },
+          },
+        },
+      },
+    });
+
+    // Generar brackets automáticamente según formato del torneo
+    let bracketResult: any = null;
+    try {
+      bracketResult = await this.bracketsService.generateTournamentBracket(
+        id,
+        updatedTournament.participants,
+        (updatedTournament as any).format || 'single_elimination'
+      );
+    } catch (err) {
+      // Si falla la generación de brackets, devolver mensaje pero no fallar el inicio
+      bracketResult = {
+        generated: false,
+        message: `Brackets no generados automáticamente: ${err.message}`,
+      };
+    }
+
+    return {
+      success: true,
+      message: 'Torneo iniciado exitosamente',
+      tournament: updatedTournament,
+      bracket: bracketResult?.success ? {
+        generated: true,
+        type: bracketResult.type,
+        participantCount: bracketResult.participantCount,
+        message: bracketResult.message,
+      } : bracketResult,
+    };
+  }
+
+  /**
    * Obtener información de bracket para un torneo
    * Devuelve hasBracket=true si el torneo está en progreso/completado y existe bracket generado.
    */

@@ -155,6 +155,70 @@ export class EventsService {
     return event;
   }
 
+  /**
+   * Obtener el bracket del evento desde Prisma (fases/grupos/sets)
+   */
+  async getEventBracket(id: string) {
+    try {
+      const event = await this.prisma.event.findUnique({
+        where: { id },
+        include: {
+          phases: {
+            include: {
+              groups: {
+                include: {
+                  sets: true,
+                },
+              },
+            },
+          },
+        },
+      });
+
+      if (!event) {
+        throw new NotFoundException(`Evento con ID ${id} no encontrado`);
+      }
+
+      return event.phases;
+    } catch (error: any) {
+      if (error instanceof NotFoundException) throw error;
+      throw new BadRequestException('Error al obtener el bracket del evento: ' + error.message);
+    }
+  }
+
+  /**
+   * Obtener todos los sets del evento (con relación a PhaseGroup)
+   */
+  async getEventSets(id: string) {
+    try {
+      const event = await this.prisma.event.findUnique({
+        where: { id },
+        include: {
+          phases: {
+            include: {
+              groups: {
+                include: {
+                  sets: true,
+                },
+              },
+            },
+          },
+        },
+      });
+
+      if (!event) {
+        throw new NotFoundException(`Evento con ID ${id} no encontrado`);
+      }
+
+      // Aplanar sets de todos los grupos
+      const sets = event.phases.flatMap((p) => p.groups.flatMap((g) => g.sets));
+      return sets;
+    } catch (error: any) {
+      if (error instanceof NotFoundException) throw error;
+      throw new BadRequestException('Error al obtener los sets del evento: ' + error.message);
+    }
+  }
+
   async findBySlug(tournamentSlug: string, eventSlug: string): Promise<Event> {
     const event = await this.prisma.event.findFirst({
       where: {

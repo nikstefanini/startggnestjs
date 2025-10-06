@@ -479,6 +479,26 @@
             "id": 95,
             "tournament_id": 1165315884,
             "name": "user7"
+        },
+        {
+            "id": 96,
+            "tournament_id": 319240873,
+            "name": "player1"
+        },
+        {
+            "id": 97,
+            "tournament_id": 319240873,
+            "name": "player2"
+        },
+        {
+            "id": 98,
+            "tournament_id": 319240873,
+            "name": "player3"
+        },
+        {
+            "id": 99,
+            "tournament_id": 319240873,
+            "name": "player4"
         }
     ],
     "stage": [
@@ -602,6 +622,40 @@
                 "matchesChildCount": 0,
                 "size": 8
             }
+        },
+        {
+            "id": 7,
+            "tournament_id": 319240873,
+            "name": "Bracket Principal - Torneo cmgedvxsx0010bd00zvbqqznm",
+            "type": "single_elimination",
+            "number": 1,
+            "settings": {
+                "seedOrdering": [
+                    "natural"
+                ],
+                "balanceByes": true,
+                "skipFirstRound": false,
+                "consolationFinal": false,
+                "matchesChildCount": 0,
+                "size": 4
+            }
+        },
+        {
+            "id": 8,
+            "tournament_id": 319240873,
+            "name": "Bracket Principal - Torneo cmgedvxsx0010bd00zvbqqznm",
+            "type": "single_elimination",
+            "number": 2,
+            "settings": {
+                "seedOrdering": [
+                    "natural"
+                ],
+                "balanceByes": true,
+                "skipFirstRound": false,
+                "consolationFinal": false,
+                "matchesChildCount": 0,
+                "size": 4
+            }
         }
     ],
     "group": [
@@ -659,6 +713,16 @@
             "id": 10,
             "stage_id": 6,
             "number": 3
+        },
+        {
+            "id": 11,
+            "stage_id": 7,
+            "number": 1
+        },
+        {
+            "id": 12,
+            "stage_id": 8,
+            "number": 1
         }
     ],
     "round": [
@@ -847,6 +911,30 @@
             "number": 2,
             "stage_id": 6,
             "group_id": 10
+        },
+        {
+            "id": 31,
+            "number": 1,
+            "stage_id": 7,
+            "group_id": 11
+        },
+        {
+            "id": 32,
+            "number": 2,
+            "stage_id": 7,
+            "group_id": 11
+        },
+        {
+            "id": 33,
+            "number": 1,
+            "stage_id": 8,
+            "group_id": 12
+        },
+        {
+            "id": 34,
+            "number": 2,
+            "stage_id": 8,
+            "group_id": 12
         }
     ],
     "match": [
@@ -1794,6 +1882,104 @@
             "stage_id": 6,
             "group_id": 10,
             "round_id": 30,
+            "child_count": 0,
+            "status": 0,
+            "opponent1": {
+                "id": null
+            },
+            "opponent2": {
+                "id": null
+            }
+        },
+        {
+            "id": 57,
+            "number": 1,
+            "stage_id": 7,
+            "group_id": 11,
+            "round_id": 31,
+            "child_count": 0,
+            "status": 2,
+            "opponent1": {
+                "id": 96,
+                "position": 1
+            },
+            "opponent2": {
+                "id": 97,
+                "position": 2
+            }
+        },
+        {
+            "id": 58,
+            "number": 2,
+            "stage_id": 7,
+            "group_id": 11,
+            "round_id": 31,
+            "child_count": 0,
+            "status": 2,
+            "opponent1": {
+                "id": 98,
+                "position": 3
+            },
+            "opponent2": {
+                "id": 99,
+                "position": 4
+            }
+        },
+        {
+            "id": 59,
+            "number": 1,
+            "stage_id": 7,
+            "group_id": 11,
+            "round_id": 32,
+            "child_count": 0,
+            "status": 0,
+            "opponent1": {
+                "id": null
+            },
+            "opponent2": {
+                "id": null
+            }
+        },
+        {
+            "id": 60,
+            "number": 1,
+            "stage_id": 8,
+            "group_id": 12,
+            "round_id": 33,
+            "child_count": 0,
+            "status": 2,
+            "opponent1": {
+                "id": 96,
+                "position": 1
+            },
+            "opponent2": {
+                "id": 97,
+                "position": 2
+            }
+        },
+        {
+            "id": 61,
+            "number": 2,
+            "stage_id": 8,
+            "group_id": 12,
+            "round_id": 33,
+            "child_count": 0,
+            "status": 2,
+            "opponent1": {
+                "id": 98,
+                "position": 3
+            },
+            "opponent2": {
+                "id": 99,
+                "position": 4
+            }
+        },
+        {
+            "id": 62,
+            "number": 1,
+            "stage_id": 8,
+            "group_id": 12,
+            "round_id": 34,
             "child_count": 0,
             "status": 0,
             "opponent1": {

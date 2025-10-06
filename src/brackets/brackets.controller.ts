@@ -63,6 +63,18 @@ export class BracketsController {
   }
 
   /**
+   * Sincronizar datos del bracket (JSON/in-memory) hacia Prisma (BD)
+   */
+  @Post(':tournamentId/sync')
+  @HttpCode(HttpStatus.OK)
+  async syncBracket(
+    @Param('tournamentId') tournamentId: string,
+    @Body() body: { eventId?: string }
+  ) {
+    return await this.bracketsService.syncBracketToPrisma(tournamentId, body?.eventId);
+  }
+
+  /**
    * Obtener todos los matches de un torneo
    */
   @Get(':tournamentId/matches')

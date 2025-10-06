@@ -734,4 +734,214 @@ export class BracketsService {
       throw new BadRequestException(`Error al resetear torneo: ${error.message}`);
     }
   }
+
+  /**
+   * Sincronizar el bracket (almacenado en brackets-manager/JSON) hacia Prisma (Postgres)
+   * Crea Phase, PhaseGroup, Match y Set para el torneo indicado.
+   * Opcionalmente puede recibir un eventId; si no se provee, usa el primer evento del torneo
+   * o crea uno por defecto si el torneo no tiene eventos.
+   */
+  async syncBracketToPrisma(tournamentId: string, eventId?: string) {
+    try {
+      // 1) Obtener torneo con eventos y participantes (incluye usuario)
+      const tournament = await this.prisma.tournament.findUnique({
+        where: { id: tournamentId },
+        include: {
+          events: true,
+          participants: {
+            include: {
+              user: true,
+            },
+          },
+        },
+      });
+
+      if (!tournament) {
+        throw new BadRequestException('Torneo no encontrado');
+      }
+
+      // 2) Buscar datos en brackets-manager
+      const numericTournamentId = Math.abs(tournamentId.hashCode());
+      const stages = await this.manager.storage.select('stage', { tournament_id: numericTournamentId });
+      if (!stages || stages.length === 0) {
+        throw new BadRequestException('No se encontró un stage/bracket para este torneo');
+      }
+      const stage = stages[0];
+      const groups = await this.manager.storage.select('group', { stage_id: stage.id });
+      const rounds = await this.manager.storage.select('round', { stage_id: stage.id });
+      const matches = await this.manager.storage.select('match', { stage_id: stage.id });
+      const bmParticipants = await this.manager.storage.select('participant', { tournament_id: stage.tournament_id });
+
+      // 3) Determinar el evento destino
+      let targetEventId = eventId;
+      if (!targetEventId) {
+        targetEventId = tournament.events?.[0]?.id;
+      }
+      if (!targetEventId) {
+        // Crear un evento por defecto si no existe ninguno
+        const newEvent = await this.prisma.event.create({
+          data: {
+            name: `Evento automático de ${tournament.name}`,
+            slug: `auto-${tournament.slug}-${Date.now()}`,
+            game: tournament.game,
+            format: tournament.format,
+            type: tournament.type,
+            status: 'ACTIVE',
+            bracketType: stage.type?.toUpperCase() === 'DOUBLE_ELIMINATION' ? 'DOUBLE_ELIMINATION' : (stage.type?.toUpperCase() === 'ROUND_ROBIN' ? 'ROUND_ROBIN' : 'SINGLE_ELIMINATION'),
+            startDate: tournament.startDate,
+            endDate: tournament.endDate,
+            tournamentId: tournament.id,
+          },
+        });
+        targetEventId = newEvent.id;
+      }
+
+      // 4) Crear la Phase principal
+      const phase = await this.prisma.phase.create({
+        data: {
+          name: stage.name || 'Main Bracket',
+          type: 'BRACKET',
+          order: 1,
+          bracketType: stage.type?.toUpperCase() === 'DOUBLE_ELIMINATION' ? 'DOUBLE_ELIMINATION' : (stage.type?.toUpperCase() === 'ROUND_ROBIN' ? 'ROUND_ROBIN' : 'SINGLE_ELIMINATION'),
+          numSeeds: bmParticipants?.length || null,
+          status: 'ACTIVE',
+          eventId: targetEventId,
+        },
+      });
+
+      // 5) Crear PhaseGroups por cada grupo del stage
+      const pgIdByGroupId = new Map<number, string>();
+      for (const group of groups) {
+        const pg = await this.prisma.phaseGroup.create({
+          data: {
+            name: `Grupo ${Number(group.number ?? group.id)}`,
+            order: Number(group.number ?? 1),
+            status: 'ACTIVE',
+            phaseId: phase.id,
+          },
+        });
+        pgIdByGroupId.set(Number(group.id), pg.id);
+      }
+
+      // 6) Construir un mapa de nombre -> userId para participantes
+      //   brackets-manager guarda participantes con "name"; los mapeamos al User del participantes del torneo
+      const nameToUserId = new Map<string, string>();
+      for (const tp of tournament.participants) {
+        const u = tp.user;
+        const username = (u?.username || '').trim();
+        const fullName = `${u?.firstName || ''} ${u?.lastName || ''}`.trim();
+        if (username) nameToUserId.set(username.toLowerCase(), u.id);
+        if (fullName) nameToUserId.set(fullName.toLowerCase(), u.id);
+      }
+      // También agregar los nombres tal como están en bmParticipants
+      for (const p of bmParticipants) {
+        const nm = (p.name || '').trim();
+        if (nm && !nameToUserId.has(nm.toLowerCase())) {
+          // buscar coincidencia por username o nombre completo
+          const found = tournament.participants.find(tp => {
+            const u = tp.user;
+            return (u?.username && u.username.toLowerCase() === nm.toLowerCase()) ||
+                   ((`${u?.firstName || ''} ${u?.lastName || ''}`.trim().toLowerCase()) === nm.toLowerCase());
+          });
+          if (found?.user?.id) {
+            nameToUserId.set(nm.toLowerCase(), found.user.id);
+          }
+        }
+      }
+
+      // 7) Crear Matches y Sets a partir de los matches de brackets-manager
+      // Crear un índice de rondas por id para obtener el número de ronda
+      const roundNumberById = new Map<number, number>();
+      for (const r of rounds) {
+        roundNumberById.set(Number(r.id), Number(r.number ?? 1));
+      }
+
+      for (const m of matches) {
+        const groupId = Number(m.group_id);
+        const phaseGroupId = pgIdByGroupId.get(groupId);
+        if (!phaseGroupId) {
+          // Si no encontramos el grupo, continuar
+          continue;
+        }
+
+        const roundNum = roundNumberById.get(Number(m.round_id)) || 1;
+
+        // Determinar jugadores por nombre
+        const opp1Id = m.opponent1?.id;
+        const opp2Id = m.opponent2?.id;
+        const opp1 = opp1Id ? bmParticipants.find(p => Number(p.id) === Number(opp1Id)) : undefined;
+        const opp2 = opp2Id ? bmParticipants.find(p => Number(p.id) === Number(opp2Id)) : undefined;
+        const p1Name = (opp1?.name || '').trim().toLowerCase();
+        const p2Name = (opp2?.name || '').trim().toLowerCase();
+        const player1Id = p1Name ? nameToUserId.get(p1Name) : undefined;
+        const player2Id = p2Name ? nameToUserId.get(p2Name) : undefined;
+
+        // Si no tenemos player1, intentar usar player2 como player1 para no romper constraint
+        const finalPlayer1Id = player1Id || player2Id;
+        const finalPlayer2Id = player1Id ? player2Id : undefined; // si p1 faltaba, queda match con un solo jugador
+        if (!finalPlayer1Id) {
+          // No podemos crear un match sin player1; saltar
+          continue;
+        }
+
+        // Mapear estado
+        const isCompleted = Number(m.status) === 3;
+        const matchStatus = isCompleted ? 'COMPLETED' : 'PENDING';
+
+        // Crear Match en el Event
+        const match = await this.prisma.match.create({
+          data: {
+            identifier: `G${groupId}-R${roundNum}-M${Number(m.id)}`,
+            round: roundNum,
+            status: matchStatus as any,
+            winnerId: undefined, // se calcula abajo
+            eventId: targetEventId,
+            player1Id: finalPlayer1Id,
+            player2Id: finalPlayer2Id,
+          },
+        });
+
+        // Calcular ganador si completed y tenemos ambos scores
+        let winnerId: string | undefined = undefined;
+        const s1 = m.opponent1?.score ?? null;
+        const s2 = m.opponent2?.score ?? null;
+        if (isCompleted && s1 !== null && s2 !== null && finalPlayer2Id) {
+          if (Number(s1) > Number(s2)) winnerId = player1Id || finalPlayer1Id;
+          else if (Number(s2) > Number(s1)) winnerId = finalPlayer2Id;
+        }
+        if (winnerId) {
+          await this.prisma.match.update({
+            where: { id: match.id },
+            data: { winnerId },
+          });
+        }
+
+        // Crear Set asociado al Match y PhaseGroup
+        await this.prisma.set.create({
+          data: {
+            setNumber: 1,
+            player1Score: s1 !== null ? Number(s1) : 0,
+            player2Score: s2 !== null ? Number(s2) : 0,
+            status: isCompleted ? 'COMPLETED' : 'PENDING',
+            winnerId,
+            matchId: match.id,
+            phaseGroupId,
+            player1Id: finalPlayer1Id,
+            player2Id: finalPlayer2Id,
+          },
+        });
+      }
+
+      return {
+        success: true,
+        message: 'Bracket sincronizado a Prisma exitosamente',
+        eventId: targetEventId,
+        phaseId: phase.id,
+        groupsCreated: groups.length,
+        matchesCreated: matches.length,
+      };
+    } catch (error) {
+      throw new BadRequestException(`Error al sincronizar bracket: ${error.message}`);
+    }
+  }
 }

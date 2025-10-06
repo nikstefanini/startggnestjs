@@ -87,6 +87,32 @@ export class EventsController {
     };
   }
 
+  /**
+   * Obtener el bracket del evento (fases/grupos/sets)
+   */
+  @Get(':id/bracket')
+  async getEventBracket(@Param('id') id: string) {
+    const phases = await this.eventsService.getEventBracket(id);
+    return {
+      success: true,
+      message: 'Bracket del evento obtenido exitosamente',
+      data: phases,
+    };
+  }
+
+  /**
+   * Obtener todos los sets del evento
+   */
+  @Get(':id/sets')
+  async getEventSets(@Param('id') id: string) {
+    const sets = await this.eventsService.getEventSets(id);
+    return {
+      success: true,
+      message: 'Sets del evento obtenidos exitosamente',
+      data: sets,
+    };
+  }
+
   @Patch(':id')
   @UseGuards(JwtAuthGuard)
   async update(

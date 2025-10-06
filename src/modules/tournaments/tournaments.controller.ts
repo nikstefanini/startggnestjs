@@ -151,6 +151,21 @@ export class TournamentsController {
   }
 
   /**
+   * Iniciar un torneo
+   */
+  @Post(':id/start')
+  @UseGuards(JwtAuthGuard)
+  @HttpCode(HttpStatus.OK)
+  async startTournament(@Param('id') id: string, @Request() req: any) {
+    try {
+      const result = await this.tournamentsService.startTournament(id, req.user.id);
+      return result;
+    } catch (error) {
+      throw new BadRequestException(`Error starting tournament: ${error.message}`);
+    }
+  }
+
+  /**
    * Obtener el bracket de un torneo
    */
   @Get(':id/bracket')
